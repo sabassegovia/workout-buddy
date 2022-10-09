@@ -4,36 +4,17 @@ require('dotenv').config();
 ////////Express app and port////////////
 const app = express();
 const PORT = process.env.PORT || 6900;
+const workoutRoutes = require('./routes/workouts.js');
+
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
-})
+});
+app.use(express.json());
 
 ///////////ROUTES/////////////////////
-app.get('/', (req, res) => {
-  res.json({ response: "Welcome to the app" });
-})
-
-app.get('/workouts', (req, res) => {
-  res.json({ response: "Welcome to the app" });
-})
-
-app.post('/workouts', (req, res) => {
-  res.json({ response: "Welcome to the app" });
-})
-
-app.get('/workouts/:id', (req, res) => {
-  res.json({ response: "Welcome to the app" });
-})
-
-app.delete('/workouts/:id', (req, res) => {
-  res.json({ response: "Welcome to the app" });
-})
-
-app.patch('/workouts/:id', (req, res) => {
-  res.json({ response: "Welcome to the app" });
-})
+app.use('/api/workouts',workoutRoutes)
 
 /////////listen for requests///////////////
 app.listen(PORT, () => {
