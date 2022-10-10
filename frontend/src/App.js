@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 //Pages and Components
 import Home from './pages/home.js';
+import Workout from './pages/Workout.js';
 import Navbar from './components/Navbar.js';
 
 
@@ -15,6 +16,10 @@ function App() {
             <Route
               path="/"
               element={<Home/>}
+            />
+            <Route
+              path="/workout"
+              element={<Workout/>}
             />
           </Routes>
         </div>
