@@ -28,6 +28,7 @@ const WorkoutDetails = ({ workout }) => {
       title: currTitle || workout.title,
       load: currLoad || workout.load,
       reps: currReps || workout.reps,
+      _id: workout._id
     };
     const response = await fetch(`/api/workouts/${workout._id}`, {
       method: 'PATCH',
@@ -43,7 +44,7 @@ const WorkoutDetails = ({ workout }) => {
     }
     if (response.ok) {
       setError(null);
-      console.log(data);
+      dispatch({ type: 'UPDATE_WORKOUT' , payload: updateObj})
     }
     //set all to the update obj
     setUpdateInput(false);

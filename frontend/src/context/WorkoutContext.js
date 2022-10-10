@@ -18,8 +18,16 @@ export const workoutsReducer = (state, action) => {
         workouts: state.workouts.filter((w) => w._id !== action.payload._id)
       }
     case 'UPDATE_WORKOUT':
+      state.workouts.forEach((w) => {
+        if (w._id === action.payload._id) {
+          w.title = action.payload.title;
+          w.load = action.payload.load;
+          w.reps = action.payload.reps;
+        }
+      });
+      console.log(state.workouts)
       return {
-        workouts: []
+        workouts: state.workouts
       }
     default:
       return state;
