@@ -6,7 +6,8 @@ const Schema = mongoose.Schema;
 const workoutSchema = new Schema({
   title: {
     type: String,
-    unique: true
+    unique: true,
+    required: true
   },
   reps: {
     type: Number,
