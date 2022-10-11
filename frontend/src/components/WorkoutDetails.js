@@ -1,12 +1,15 @@
 import { useState } from 'react';
 
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 //date-fns
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 const WorkoutDetails = ({ workout }) => {
   const { dispatch } = useWorkoutsContext();
+  const { user } = useAuthContext();
+  
   const [currTitle, setTitle] = useState(workout.title);
   const [currReps, setReps] = useState(workout.reps);
   const [currLoad, setLoad] = useState(workout.load);
@@ -14,8 +17,15 @@ const WorkoutDetails = ({ workout }) => {
   const [error, setError] = useState(null);
 
   const handleDeleteClick = async () => {
+    if (!user) {
+      setError("You must be logged in");
+      return
+    }
     const response = await fetch(`/api/workouts/${workout._id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        "Authorization": `Bearer ${user.token}`
+      }
     });
     const data = await response.json();
     if (response.ok) {
@@ -23,6 +33,10 @@ const WorkoutDetails = ({ workout }) => {
     }
   }
   const handleUpdate = async (e) => {
+    if (!user) {
+      setError("You must be logged in");
+      return
+    }
     e.preventDefault()
     let updateObj = {
       title: currTitle || workout.title,
@@ -34,7 +48,8 @@ const WorkoutDetails = ({ workout }) => {
       method: 'PATCH',
       body: JSON.stringify(updateObj),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${user.token}`
       }
     });
     const data = await response.json();
@@ -60,6 +75,7 @@ const WorkoutDetails = ({ workout }) => {
       <p>{formatDistanceToNow(new Date(workout.createdAt), {addSuffix: true})}</p>
 
       <span className="material-symbols-outlined delete" onClick={handleDeleteClick}>delete</span>
+      {error && <div className="error">{error}</div>}
       <span className="material-symbols-outlined update" onClick={() => setUpdateInput(!updateInput)}>settings</span>
 
       {updateInput && <form onSubmit={handleUpdate} className="updateInput">
@@ -83,7 +99,7 @@ const WorkoutDetails = ({ workout }) => {
           value={currReps}
         />
         <button>Update</button>
-        {error && <div className="error">poop</div>}
+        {error && <div className="error">{error}</div>}
       </form>}
     </div>
   )
