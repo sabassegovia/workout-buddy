@@ -12,5 +12,3 @@ router.post('/', createWorkout);
 router.delete('/:id', deleteWorkout);
 router.patch('/:id', updateWorkout);
 module.exports = router;
-
-//hi
